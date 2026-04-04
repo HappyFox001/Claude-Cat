@@ -53,6 +53,11 @@ export function useClaudeState() {
     console.log(`%c[Claude State] ${state} → Expression #${expressionIndex} (${expressionName})`, 'color: #00bcd4; font-weight: bold; font-size: 14px')
     live2d.playExpressions(expressionIndex)
 
+    // 更新显示屏状态
+    if (typeof window !== 'undefined' && (window as any).__updateStatusScreen) {
+      (window as any).__updateStatusScreen(state)
+    }
+
     // 记录统计数据
     const success = state !== 'error'
     statsStore.recordStateChange(state, state, success)

@@ -9,6 +9,7 @@ import { round } from 'es-toolkit'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 import StatsPanel from '@/components/StatsPanel.vue'
+import StatusScreen from '@/components/StatusScreen.vue'
 import { useClaudeState } from '@/composables/useClaudeState'
 import { useDevice } from '@/composables/useDevice'
 import { useModel } from '@/composables/useModel'
@@ -162,6 +163,7 @@ function handleMouseMove(event: MouseEvent) {
       </span>
     </div>
 
+    <StatusScreen />
     <StatsPanel />
   </div>
 </template>
