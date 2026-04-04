@@ -1,38 +1,22 @@
 #!/bin/bash
-# BongoCat Claude Code Hook (macOS/Linux)
-# Maps Claude Code events to expression states
 
-set -e
+# BongoCat Hook Script
+# This script is called by Claude Code hooks to update the cat's expression
 
-# Validate state parameter
-STATE=$1
-VALID_STATES=("idle" "thinking" "coding" "reading" "running" "error" "celebrate")
-
-if [[ -z "$STATE" ]]; then
-    echo "Error: State parameter required"
-    echo "Usage: $0 <state>"
-    echo "Valid states: ${VALID_STATES[*]}"
-    exit 1
-fi
-
-# Check if state is valid
-if [[ ! " ${VALID_STATES[@]} " =~ " ${STATE} " ]]; then
-    echo "Error: Invalid state: $STATE"
-    echo "Valid states: ${VALID_STATES[*]}"
-    exit 1
-fi
-
-# Create status directory if it doesn't exist
+STATE=${1:-idle}
 STATUS_DIR="$HOME/.bongo-cat"
+STATUS_FILE="$STATUS_DIR/status.json"
+
+# Create directory if it doesn't exist
 mkdir -p "$STATUS_DIR"
 
-# Prepare status data
+# Get current timestamp (Unix epoch in seconds)
 TIMESTAMP=$(date +%s)
-STATUS_DATA="{\"state\":\"$STATE\",\"timestamp\":$TIMESTAMP}"
 
-# Write to temporary file first (atomic operation)
-STATUS_FILE="$STATUS_DIR/status.json"
-TEMP_FILE="$STATUS_DIR/status.json.tmp"
+# Write status to JSON file
+cat > "$STATUS_FILE" << INNER_EOF
+{"state":"$STATE","timestamp":$TIMESTAMP}
+INNER_EOF
 
-echo "$STATUS_DATA" > "$TEMP_FILE"
-mv -f "$TEMP_FILE" "$STATUS_FILE"
+# Optional: Log for debugging (uncomment to enable)
+# echo "[$(date)] BongoCat Hook: state=$STATE, timestamp=$TIMESTAMP" >> "$STATUS_DIR/hook.log"

@@ -39,7 +39,7 @@ export const useCatStore = defineStore('cat', () => {
   const alwaysOnTop = ref(true)
 
   /** @deprecated 请使用 `window.scale` */
-  const scale = ref(100)
+  const scale = ref(25)
 
   /** @deprecated 请使用 `window.opacity` */
   const opacity = ref(100)
@@ -58,7 +58,7 @@ export const useCatStore = defineStore('cat', () => {
     visible: true,
     passThrough: false,
     alwaysOnTop: false,
-    scale: 100,
+    scale: 25,
     opacity: 100,
     radius: 0,
     hideOnHover: false,
