@@ -136,6 +136,13 @@ class Live2d {
 
     return coreModel?.setParameterValueById?.(id, Number(value))
   }
+
+  public getParameterValue(id: string): number | undefined {
+    const coreModel = this.getCoreModel()
+    const index = coreModel?.getParameterIndex(id)
+    if (index === undefined || index < 0) return undefined
+    return coreModel?.getParameterValueById?.(id)
+  }
 }
 
 const live2d = new Live2d()

@@ -1,5 +1,6 @@
 import { useTauriListen } from './useTauriListen'
 
+import { actionConfigs } from '@/config/actions'
 import { useStatsStore } from '@/stores/statistics'
 import live2d from '@/utils/live2d'
 
@@ -18,41 +19,14 @@ const STATE_TO_EXPRESSION: Record<string, number> = {
   running: 6, // excited - 兴奋
   error: 2, // angry - 生气
   celebrate: 6, // excited - 庆祝
+  // 新增状态
+  failed: 3, // sad - API/工具失败
+  denied: 5, // surprised - 权限被拒
+  busy: 7, // fluffy - 子代理运行中
+  searching: 1, // question - 网络搜索
 }
 
-// 状态对应的表情参数（切换状态时设置，保持到下次状态变化）
-const STATE_TO_EXPRESSION_PARAMS: Record<string, () => void> = {
-  idle: () => {
-    // 无特殊表情
-  },
-  thinking: () => {
-    animateParameter('Param28', 0, 1, 300) // 问号表情
-  },
-  coding: () => {
-    animateParameter('ParamEyeLSmile', 0, 0.4, 200)
-    animateParameter('ParamEyeRSmile', 0, 0.4, 200)
-  },
-  reading: () => {
-    // 专注表情
-  },
-  running: () => {
-    animateParameter('ParamEyeLOpen', 1, 1.2, 150)
-    animateParameter('ParamEyeROpen', 1, 1.2, 150)
-  },
-  error: () => {
-    animateParameter('Param11', 0, -1, 400) // 右耳下垂
-    animateParameter('Param29', 0, -1, 400) // 左耳下垂
-    animateParameter('Param10', 0, 1, 400) // 眼泪
-  },
-  celebrate: () => {
-    animateParameter('ParamEyeLSmile', 0, 1, 200)
-    animateParameter('ParamEyeRSmile', 0, 1, 200)
-    animateParameter('ParamCheek', 0, 1, 300) // 脸红
-    animateParameter('ParamMouthForm', 0, 1, 200) // 张嘴笑
-  },
-}
-
-// 状态对应的动作动画（一次性播放的小动画）
+// 状态对应的动作动画（只控制身体、尾巴等，不控制表情）
 const STATE_TO_ACTIONS: Record<string, () => void> = {
   idle: () => {
     // idle 没有特殊动作，直接重置
@@ -60,32 +34,53 @@ const STATE_TO_ACTIONS: Record<string, () => void> = {
   thinking: () => {
     // 歪头思考动画
     startAction()
-    startThinkingAnimation()
+    playActionFromConfig('thinking')
   },
   coding: () => {
     // 点头专注动画
     startAction()
-    startCodingAnimation()
+    playActionFromConfig('coding')
   },
   reading: () => {
     // 眼睛扫视动画
     startAction()
-    startReadingAnimation()
+    playActionFromConfig('reading')
   },
   running: () => {
     // 兴奋抖动动画
     startAction()
-    startRunningAnimation()
+    playActionFromConfig('running')
   },
   error: () => {
-    // 难过动画
+    // 生气动画
     startAction()
-    startErrorAnimation()
+    playActionFromConfig('error')
   },
   celebrate: () => {
     // 庆祝摇头动画
     startAction()
-    startCelebrateAnimation()
+    playActionFromConfig('celebrate')
+  },
+  // 新增状态动作
+  failed: () => {
+    // 失败/难过动画
+    startAction()
+    playActionFromConfig('failed')
+  },
+  denied: () => {
+    // 惊讶动画
+    startAction()
+    playActionFromConfig('denied')
+  },
+  busy: () => {
+    // 忙碌/蓬松动画
+    startAction()
+    playActionFromConfig('busy')
+  },
+  searching: () => {
+    // 搜索动画（复用 reading）
+    startAction()
+    playActionFromConfig('searching')
   },
 }
 
@@ -108,14 +103,16 @@ let animationInterval: ReturnType<typeof setInterval> | null = null
 let actionTimeout: ReturnType<typeof setTimeout> | null = null
 const ACTION_DURATION = 2500 // 动作持续时间 2.5 秒
 
-// 动画辅助函数
-function animateParameter(id: string, from: number, to: number, duration: number) {
+// 动画辅助函数 - 从当前值平滑过渡到目标值
+function animateParameter(id: string, _from: number, to: number, duration: number) {
   const startTime = Date.now()
+  // 获取当前参数值作为起始值
+  const currentValue = live2d.getParameterValue(id) ?? _from
   const animate = () => {
     const elapsed = Date.now() - startTime
     const progress = Math.min(elapsed / duration, 1)
     const eased = 1 - Math.pow(1 - progress, 3) // easeOutCubic
-    const value = from + (to - from) * eased
+    const value = currentValue + (to - currentValue) * eased
     live2d.setParameterValue(id, value)
     if (progress < 1) {
       requestAnimationFrame(animate)
@@ -140,42 +137,43 @@ function startAction() {
 // 动作结束（恢复鼠标追随，但保持表情）
 function finishAction() {
   stopCurrentAnimation()
-  live2d.isActionPlaying = false
-  // 只重置动作相关的参数（头部角度、身体等），不重置表情参数
-  animateParameter('ParamAngleX', 0, 0, 400)
-  animateParameter('ParamAngleY', 0, 0, 400)
-  animateParameter('ParamAngleZ', 0, 0, 400)
+  // 先重置所有动作相关参数（包括头部角度），完成后再恢复鼠标跟随
+  // 保持 isActionPlaying = true，避免重置动画和鼠标跟随冲突
+  animateParameter('ParamAngleX', 0, 0, 300)
+  animateParameter('ParamAngleY', 0, 0, 300)
+  animateParameter('ParamAngleZ', 0, 0, 300)
   animateParameter('ParamBodyAngleX', 0, 0, 300)
   animateParameter('ParamBodyAngleY', 0, 0, 300)
-  animateParameter('ParamEyeBallX', 0, 0, 300)
-  animateParameter('ParamEyeBallY', 0, 0, 300)
-  // 表情参数（问号、眼泪、脸红等）保持不变，由状态变化时控制
+  // 延迟恢复鼠标跟随，等待重置动画完成
+  setTimeout(() => {
+    live2d.isActionPlaying = false
+  }, 350)
 }
 
-// 完全重置（切换到 idle 时调用）
+// 完全重置（切换到 idle 时调用）- 重置所有动作参数，表情由 playExpressions 控制
 function resetToIdle() {
   stopCurrentAnimation()
   if (actionTimeout) {
     clearTimeout(actionTimeout)
     actionTimeout = null
   }
-  live2d.isActionPlaying = false
-  // 重置所有参数
+  // 保持 isActionPlaying = true，等待重置动画完成
+  live2d.isActionPlaying = true
+  // 重置所有参数（包括头部角度）
   animateParameter('ParamAngleX', 0, 0, 300)
   animateParameter('ParamAngleY', 0, 0, 300)
   animateParameter('ParamAngleZ', 0, 0, 300)
   animateParameter('ParamBodyAngleX', 0, 0, 300)
   animateParameter('ParamBodyAngleY', 0, 0, 300)
-  animateParameter('ParamEyeBallX', 0, 0, 200)
-  animateParameter('ParamEyeBallY', 0, 0, 200)
-  animateParameter('Param28', 0, 0, 300) // 问号消失
-  animateParameter('Param10', 0, 0, 300) // 眼泪消失
-  animateParameter('Param11', 0, 0, 300) // 耳朵恢复
-  animateParameter('Param29', 0, 0, 300)
-  animateParameter('ParamCheek', 0, 0, 300) // 脸红消失
-  animateParameter('ParamEyeLSmile', 0, 0, 200)
-  animateParameter('ParamEyeRSmile', 0, 0, 200)
-  animateParameter('ParamMouthForm', 0, 0, 200)
+  animateParameter('ParamBodyAngleZ', 0, 0, 300)
+  animateParameter('Param14', 0, 0, 300) // 尾巴
+  animateParameter('Param15', 0, 0, 300)
+  animateParameter('Param16', 0, 0, 300)
+  animateParameter('Param17', 0, 0, 300)
+  // 延迟恢复鼠标跟随，等待重置动画完成
+  setTimeout(() => {
+    live2d.isActionPlaying = false
+  }, 350)
 }
 
 // 停止当前动画
@@ -186,104 +184,22 @@ function stopCurrentAnimation() {
   }
 }
 
-// 思考动画：头部大幅度左右摇摆 + 尾巴晃动
-function startThinkingAnimation() {
-  stopCurrentAnimation()
-  let phase = 0
-  animationInterval = setInterval(() => {
-    phase += 0.06
-    const angleZ = 25 + Math.sin(phase) * 15 // 大幅度摇摆
-    const angleY = 15 + Math.sin(phase * 0.7) * 8
-    const tailAngle = Math.sin(phase * 0.5) * 25
-    live2d.setParameterValue('ParamAngleZ', angleZ)
-    live2d.setParameterValue('ParamAngleY', angleY)
-    live2d.setParameterValue('Param14', tailAngle)
-    live2d.setParameterValue('Param15', tailAngle * 0.8)
-  }, 50)
-}
+// 从配置播放动作
+function playActionFromConfig(actionName: string) {
+  const config = actionConfigs[actionName]
+  if (!config) return
 
-// 编码动画：有节奏地点头
-function startCodingAnimation() {
   stopCurrentAnimation()
   let phase = 0
-  animationInterval = setInterval(() => {
-    phase += 0.08
-    const angleX = -10 + Math.sin(phase) * 8 // 点头幅度加大
-    const angleY = Math.sin(phase * 0.6) * 5
-    const tailAngle = Math.sin(phase * 0.3) * 15
-    live2d.setParameterValue('ParamAngleX', angleX)
-    live2d.setParameterValue('ParamAngleY', angleY)
-    live2d.setParameterValue('Param14', tailAngle)
-  }, 50)
-}
 
-// 阅读动画：眼睛大幅度左右移动
-function startReadingAnimation() {
-  stopCurrentAnimation()
-  let phase = 0
   animationInterval = setInterval(() => {
-    phase += 0.12
-    const eyeX = Math.sin(phase) * 1 // 眼睛移动幅度加大
-    const eyeY = -0.3 + Math.sin(phase * 0.4) * 0.3
-    const angleY = -10 + Math.sin(phase * 0.3) * 5
-    live2d.setParameterValue('ParamEyeBallX', eyeX)
-    live2d.setParameterValue('ParamEyeBallY', eyeY)
-    live2d.setParameterValue('ParamAngleY', angleY)
-  }, 50)
-}
+    phase += config.speed
 
-// 运行动画：兴奋大幅度抖动 + 尾巴疯狂摇摆
-function startRunningAnimation() {
-  stopCurrentAnimation()
-  let phase = 0
-  animationInterval = setInterval(() => {
-    phase += 0.3
-    const bodyY = Math.sin(phase) * 8 // 身体抖动加大
-    const bodyX = Math.sin(phase * 1.5) * 5
-    const tailAngle = Math.sin(phase * 2.5) * 30 // 尾巴快速大摇
-    const angleZ = Math.sin(phase * 0.8) * 10
-    live2d.setParameterValue('ParamBodyAngleY', bodyY)
-    live2d.setParameterValue('ParamBodyAngleX', bodyX)
-    live2d.setParameterValue('ParamAngleZ', angleZ)
-    live2d.setParameterValue('Param14', tailAngle)
-    live2d.setParameterValue('Param15', tailAngle * 0.9)
-    live2d.setParameterValue('Param16', tailAngle * 0.8)
-  }, 40)
-}
-
-// 庆祝动画：超级开心大摇头 + 尾巴疯狂摆动
-function startCelebrateAnimation() {
-  stopCurrentAnimation()
-  let phase = 0
-  animationInterval = setInterval(() => {
-    phase += 0.12
-    const angleZ = Math.sin(phase) * 25 // 大幅度摇头
-    const angleY = Math.sin(phase * 0.7) * 15
-    const bodyY = Math.sin(phase * 1.2) * 5
-    const tailAngle = Math.sin(phase * 2) * 35 // 尾巴大摆
-    live2d.setParameterValue('ParamAngleZ', angleZ)
-    live2d.setParameterValue('ParamAngleY', angleY)
-    live2d.setParameterValue('ParamBodyAngleY', bodyY)
-    live2d.setParameterValue('Param14', tailAngle)
-    live2d.setParameterValue('Param15', tailAngle * 0.9)
-    live2d.setParameterValue('Param16', tailAngle * 0.85)
-    live2d.setParameterValue('Param17', tailAngle * 0.8)
-  }, 40)
-}
-
-// 错误动画：难过地低头晃动
-function startErrorAnimation() {
-  stopCurrentAnimation()
-  let phase = 0
-  animationInterval = setInterval(() => {
-    phase += 0.05
-    const angleZ = -15 + Math.sin(phase) * 8 // 歪头难过
-    const angleX = 10 + Math.sin(phase * 0.5) * 5 // 低头
-    const eyeY = -0.5 + Math.sin(phase * 0.3) * 0.2
-    live2d.setParameterValue('ParamAngleZ', angleZ)
-    live2d.setParameterValue('ParamAngleX', angleX)
-    live2d.setParameterValue('ParamEyeBallY', eyeY)
-  }, 50)
+    for (const param of config.params) {
+      const value = param.base + Math.sin(phase * param.frequency) * param.amplitude
+      live2d.setParameterValue(param.id, value)
+    }
+  }, config.interval)
 }
 
 export function useClaudeState() {
@@ -310,21 +226,14 @@ export function useClaudeState() {
       'color: #00bcd4; font-weight: bold; font-size: 14px',
     )
 
-    // idle 状态：完全重置
+    // 切换表情（由 Live2D 表情系统控制）
+    live2d.playExpressions(expressionIndex)
+
+    // idle 状态：重置动作参数
     if (state === 'idle') {
       resetToIdle()
-      live2d.playExpressions(expressionIndex)
     } else {
-      // 非 idle 状态：设置表情 + 播放动作
-      live2d.playExpressions(expressionIndex)
-
-      // 设置表情参数（会保持到下次状态变化）
-      const setExpression = STATE_TO_EXPRESSION_PARAMS[state]
-      if (setExpression) {
-        setExpression()
-      }
-
-      // 播放动作动画（一次性，结束后恢复鼠标追随但保持表情）
+      // 非 idle 状态：播放动作动画（只控制身体、尾巴等）
       const action = STATE_TO_ACTIONS[state]
       if (action) {
         action()
