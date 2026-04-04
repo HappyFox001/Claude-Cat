@@ -163,7 +163,9 @@ function handleMouseMove(event: MouseEvent) {
       </span>
     </div>
 
-    <StatusScreen />
+    <Teleport to="body">
+      <StatusScreen />
+    </Teleport>
     <StatsPanel />
   </div>
 </template>
