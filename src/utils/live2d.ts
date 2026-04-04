@@ -16,8 +16,9 @@ Live2DModel.registerTicker(Ticker)
 class Live2d {
   private app: Application | null = null
   public model: Live2DModel | null = null
+  public isActionPlaying = false // 动作播放中时禁用鼠标追随
 
-  constructor() { }
+  constructor() {}
 
   private initApp() {
     if (this.app) return

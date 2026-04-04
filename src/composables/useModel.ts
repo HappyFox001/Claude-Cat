@@ -97,6 +97,9 @@ export function useModel() {
   }
 
   async function handleMouseMove(cursorPoint: PhysicalPosition) {
+    // 动作播放中时跳过鼠标追随
+    if (live2d.isActionPlaying) return
+
     const monitor = await getCursorMonitor(cursorPoint)
 
     if (!monitor) return
