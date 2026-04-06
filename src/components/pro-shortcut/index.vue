@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Key } from '@/utils/keyboard'
 
-import { find, map, remove, some, split } from 'es-toolkit/compat'
+import { find, map, some, split } from 'es-toolkit/compat'
 import { ref, useTemplateRef, watch } from 'vue'
 
 import ProListItem from '@/components/pro-list-item/index.vue'
@@ -17,6 +17,7 @@ const shortcutInputRef = useTemplateRef('shortcutInput')
 const isFocusing = ref(false)
 const isHovering = ref(false)
 const pressedKeys = ref<Key[]>([])
+const isRecordingComplete = ref(false)
 
 watch(modelValue, () => {
   parseModelValue()
@@ -29,7 +30,7 @@ function parseModelValue() {
 
   pressedKeys.value = split(modelValue.value, '+').map((tauriKey) => {
     return find(keys, { tauriKey })!
-  })
+  }).filter(Boolean)
 }
 
 function getEventKey(event: KeyboardEvent) {
@@ -42,15 +43,16 @@ function getEventKey(event: KeyboardEvent) {
   return isModifierKey ? eventKey : code
 }
 
-function isValidShortcut() {
-  if (pressedKeys.value?.[0]?.eventKey?.startsWith('F')) {
+function isValidShortcut(keysToCheck: Key[]) {
+  // F1-F12 单独可用
+  if (keysToCheck?.[0]?.eventKey?.startsWith('F')) {
     return true
   }
 
-  const hasModifierKey = some(pressedKeys.value, ({ eventKey }) => {
+  const hasModifierKey = some(keysToCheck, ({ eventKey }) => {
     return some(modifierKeys, { eventKey })
   })
-  const hasStandardKey = some(pressedKeys.value, ({ eventKey }) => {
+  const hasStandardKey = some(keysToCheck, ({ eventKey }) => {
     return some(standardKeys, { eventKey })
   })
 
@@ -59,14 +61,14 @@ function isValidShortcut() {
 
 function handleFocus() {
   isFocusing.value = true
-
+  isRecordingComplete.value = false
   pressedKeys.value = []
 }
 
 function handleBlur() {
   isFocusing.value = false
 
-  if (!isValidShortcut()) {
+  if (!isValidShortcut(pressedKeys.value)) {
     return parseModelValue()
   }
 
@@ -74,23 +76,47 @@ function handleBlur() {
 }
 
 function handleKeyDown(event: KeyboardEvent) {
+  event.preventDefault()
+
+  // 如果已经录制完成，忽略后续按键
+  if (isRecordingComplete.value) return
+
   const eventKey = getEventKey(event)
-
   const matched = find(keys, { eventKey })
-  const isInvalid = !matched
-  const isDuplicate = some(pressedKeys.value, { eventKey })
 
-  if (isInvalid || isDuplicate) return
+  if (!matched) return
 
-  pressedKeys.value.push(matched)
+  // 检查是否是修饰键
+  const isModifier = some(modifierKeys, { eventKey })
 
-  if (isValidShortcut()) {
-    shortcutInputRef.value?.blur()
+  if (isModifier) {
+    // 修饰键：添加到列表（如果不存在）
+    const isDuplicate = some(pressedKeys.value, { eventKey })
+    if (!isDuplicate) {
+      pressedKeys.value.push(matched)
+    }
+  }
+  else {
+    // 非修饰键（标准键）：完成录制
+    // 确保修饰键在前，标准键在后
+    const modifiers = pressedKeys.value.filter(k =>
+      some(modifierKeys, { eventKey: k.eventKey }),
+    )
+    pressedKeys.value = [...modifiers, matched]
+
+    // 检查是否有效，有效则完成录制
+    if (isValidShortcut(pressedKeys.value)) {
+      isRecordingComplete.value = true
+      // 延迟 blur 让用户看到结果
+      setTimeout(() => {
+        shortcutInputRef.value?.blur()
+      }, 100)
+    }
   }
 }
 
-function handleKeyUp(event: KeyboardEvent) {
-  remove(pressedKeys.value, { eventKey: getEventKey(event) })
+function handleKeyUp(_event: KeyboardEvent) {
+  // 不再移除按键，保持录制的组合
 }
 </script>
 
@@ -114,7 +140,7 @@ function handleKeyUp(event: KeyboardEvent) {
       </span>
 
       <span class="text-primary font-bold">
-        {{ map(pressedKeys, 'symbol').join(' ') }}
+        {{ map(pressedKeys, 'symbol').join(' + ') }}
       </span>
 
       <div

@@ -69,7 +69,7 @@ const config = computed(() => pageConfig[props.variant] || pageConfig.general)
 </script>
 
 <template>
-  <div class="settings-decor">
+  <div class="settings-decor" data-tauri-drag-region>
     <!-- ASCII 风格头部 -->
     <div class="decor-header">
       <span class="ascii-border">╭───────────╮</span>
@@ -140,6 +140,13 @@ const config = computed(() => pageConfig[props.variant] || pageConfig.general)
   );
   font-family: var(--font-cute);
   overflow: hidden;
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+/* 子元素不阻止拖拽 */
+.settings-decor > * {
+  pointer-events: none;
 }
 
 /* ASCII 头部 */

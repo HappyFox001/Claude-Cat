@@ -10,6 +10,7 @@ import { onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterView } from 'vue-router'
 
+import { useGlobalShortcuts } from './composables/useGlobalShortcuts'
 import { useTauriListen } from './composables/useTauriListen'
 import { catThemeToken, useThemeVars } from './composables/useThemeVars'
 import { useWindowState } from './composables/useWindowState'
@@ -32,6 +33,9 @@ const appWindow = getCurrentWebviewWindow()
 const { isRestored, restoreState } = useWindowState()
 const { darkAlgorithm, defaultAlgorithm } = theme
 const { locale } = useI18n()
+
+// 初始化全局快捷键（在 setup 阶段调用）
+useGlobalShortcuts()
 
 onMounted(async () => {
   generateColorVars()
