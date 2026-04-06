@@ -16,7 +16,6 @@ Live2DModel.registerTicker(Ticker)
 class Live2d {
   private app: Application | null = null
   public model: Live2DModel | null = null
-  public isActionPlaying = false // 动作播放中时禁用鼠标追随
 
   constructor() {}
 
@@ -102,14 +101,12 @@ class Live2d {
   }
 
   public playExpressions(index: number) {
-    console.log(`%c[Live2D] Playing expression #${index}`, 'color: #00ff00; font-weight: bold')
-    const result = this.model?.expression(index)
-
     if (!this.model) {
       console.warn('[Live2D] Model not loaded yet')
+      return
     }
 
-    return result
+    return this.model.expression(index)
   }
 
   public getCoreModel() {

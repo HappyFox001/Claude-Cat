@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 import { useStatsStore } from '@/stores/statistics'
 
@@ -13,7 +13,7 @@ let hideTimeout: ReturnType<typeof setTimeout> | null = null
 let typingTimeout: ReturnType<typeof setTimeout> | null = null
 
 // 状态显示配置 - 更可爱有趣的文案
-const stateConfig: Record<string, { bubbles: string[]; color: string }> = {
+const stateConfig: Record<string, { bubbles: string[], color: string }> = {
   idle: { bubbles: ['zzZ...', '打个盹~', '喵~'], color: '#94a3b8' },
   thinking: {
     bubbles: ['嗯...', '让我想想...', '这个嘛...', '有意思喵~'],

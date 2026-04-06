@@ -6,7 +6,6 @@ import Position from './components/position/index.vue'
 import ProList from '@/components/pro-list/index.vue'
 import ProListItem from '@/components/pro-list-item/index.vue'
 import { useCatStore } from '@/stores/cat'
-import { isWindows } from '@/utils/platform'
 
 const catStore = useCatStore()
 </script>
@@ -21,29 +20,10 @@ const catStore = useCatStore()
     </ProListItem>
 
     <ProListItem
-      :description="$t('pages.preference.cat.hints.singleMode')"
-      :title="$t('pages.preference.cat.labels.singleMode')"
-    >
-      <Switch v-model:checked="catStore.model.single" />
-    </ProListItem>
-
-    <ProListItem
       :description="$t('pages.preference.cat.hints.mouseMirror')"
       :title="$t('pages.preference.cat.labels.mouseMirror')"
     >
       <Switch v-model:checked="catStore.model.mouseMirror" />
-    </ProListItem>
-
-    <ProListItem
-      v-if="isWindows"
-      :description="$t('pages.preference.cat.hints.autoReleaseDelay')"
-      :title="$t('pages.preference.cat.labels.autoReleaseDelay')"
-    >
-      <InputNumber
-        v-model:value="catStore.model.autoReleaseDelay"
-        addon-after="s"
-        class="w-28"
-      />
     </ProListItem>
   </ProList>
 

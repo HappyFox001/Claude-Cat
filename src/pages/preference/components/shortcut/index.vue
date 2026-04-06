@@ -9,7 +9,7 @@ import { useCatStore } from '@/stores/cat'
 import { useShortcutStore } from '@/stores/shortcut.ts'
 
 const shortcutStore = useShortcutStore()
-const { visibleCat, visiblePreference, mirrorMode, penetrable, alwaysOnTop } = storeToRefs(shortcutStore)
+const { visibleCat, visiblePreference } = storeToRefs(shortcutStore)
 const catStore = useCatStore()
 
 useTauriShortcut(visibleCat, () => {
@@ -18,18 +18,6 @@ useTauriShortcut(visibleCat, () => {
 
 useTauriShortcut(visiblePreference, () => {
   toggleWindowVisible('preference')
-})
-
-useTauriShortcut(mirrorMode, () => {
-  catStore.model.mirror = !catStore.model.mirror
-})
-
-useTauriShortcut(penetrable, () => {
-  catStore.window.passThrough = !catStore.window.passThrough
-})
-
-useTauriShortcut(alwaysOnTop, () => {
-  catStore.window.alwaysOnTop = !catStore.window.alwaysOnTop
 })
 </script>
 
@@ -45,24 +33,6 @@ useTauriShortcut(alwaysOnTop, () => {
       v-model="shortcutStore.visiblePreference"
       :description="$t('pages.preference.shortcut.hints.togglePreferences')"
       :title="$t('pages.preference.shortcut.labels.togglePreferences')"
-    />
-
-    <ProShortcut
-      v-model="shortcutStore.mirrorMode"
-      :description="$t('pages.preference.shortcut.hints.mirrorMode')"
-      :title="$t('pages.preference.shortcut.labels.mirrorMode')"
-    />
-
-    <ProShortcut
-      v-model="shortcutStore.penetrable"
-      :description="$t('pages.preference.shortcut.hints.passThrough')"
-      :title="$t('pages.preference.shortcut.labels.passThrough')"
-    />
-
-    <ProShortcut
-      v-model="shortcutStore.alwaysOnTop"
-      :description="$t('pages.preference.shortcut.hints.alwaysOnTop')"
-      :title="$t('pages.preference.shortcut.labels.alwaysOnTop')"
     />
   </ProList>
 </template>

@@ -43,27 +43,27 @@ useEventListener('keydown', (e: KeyboardEvent) => {
       class="min-w-80 rounded-lg bg-white/95 p-6 shadow-2xl"
       @click.stop
     >
-      <h2 class="mb-4 text-center text-xl font-bold text-gray-800">
+      <h2 class="mb-4 text-center text-xl text-gray-800 font-bold">
         Claude Code 统计
       </h2>
 
       <div class="space-y-3">
         <!-- 今日使用次数 -->
         <div class="flex items-center justify-between rounded-lg bg-blue-50 p-3">
-          <span class="font-medium text-gray-700">今日使用次数</span>
-          <span class="text-2xl font-bold text-blue-600">{{ statsStore.todayCount }}</span>
+          <span class="text-gray-700 font-medium">今日使用次数</span>
+          <span class="text-2xl text-blue-600 font-bold">{{ statsStore.todayCount }}</span>
         </div>
 
         <!-- 成功率 -->
         <div class="flex items-center justify-between rounded-lg bg-green-50 p-3">
-          <span class="font-medium text-gray-700">成功率</span>
-          <span class="text-2xl font-bold text-green-600">{{ statsStore.successRate }}%</span>
+          <span class="text-gray-700 font-medium">成功率</span>
+          <span class="text-2xl text-green-600 font-bold">{{ statsStore.successRate }}%</span>
         </div>
 
         <!-- 工作时长 -->
         <div class="flex items-center justify-between rounded-lg bg-purple-50 p-3">
-          <span class="font-medium text-gray-700">工作时长</span>
-          <span class="text-2xl font-bold text-purple-600">{{ formattedDuration }}</span>
+          <span class="text-gray-700 font-medium">工作时长</span>
+          <span class="text-2xl text-purple-600 font-bold">{{ formattedDuration }}</span>
         </div>
 
         <!-- 最常用工具 -->
@@ -71,8 +71,8 @@ useEventListener('keydown', (e: KeyboardEvent) => {
           v-if="statsStore.mostUsedTool"
           class="flex items-center justify-between rounded-lg bg-orange-50 p-3"
         >
-          <span class="font-medium text-gray-700">最常用工具</span>
-          <span class="text-lg font-bold text-orange-600">{{ statsStore.mostUsedTool }}</span>
+          <span class="text-gray-700 font-medium">最常用工具</span>
+          <span class="text-lg text-orange-600 font-bold">{{ statsStore.mostUsedTool }}</span>
         </div>
 
         <!-- 工具使用列表 -->
@@ -80,7 +80,7 @@ useEventListener('keydown', (e: KeyboardEvent) => {
           v-if="statsStore.toolsList.length > 0"
           class="mt-4 max-h-60 overflow-y-auto rounded-lg bg-gray-50 p-3"
         >
-          <h3 class="mb-2 text-sm font-semibold text-gray-600">
+          <h3 class="mb-2 text-sm text-gray-600 font-semibold">
             工具使用详情
           </h3>
           <div class="space-y-2">
@@ -89,7 +89,7 @@ useEventListener('keydown', (e: KeyboardEvent) => {
               :key="tool.name"
               class="flex items-center justify-between text-sm"
             >
-              <span class="font-medium text-gray-700">{{ tool.name }}</span>
+              <span class="text-gray-700 font-medium">{{ tool.name }}</span>
               <div class="flex gap-2 text-xs">
                 <span class="text-gray-500">总计: {{ tool.count }}</span>
                 <span class="text-green-600">成功: {{ tool.successCount }}</span>

@@ -1,12 +1,7 @@
 mod core;
 mod utils;
 
-use core::{
-    claude_status::StatusWatcher,
-    device::start_device_listening,
-    // gamepad::{start_gamepad_listing, stop_gamepad_listing},  // Disabled: not needed for void_cat model
-    prevent_default, setup,
-};
+use core::{claude_status::StatusWatcher, device::start_device_listening, prevent_default, setup};
 use tauri::{Manager, WindowEvent, generate_handler};
 use tauri_plugin_autostart::MacosLauncher;
 use tauri_plugin_custom_window::{
@@ -32,12 +27,7 @@ pub fn run() {
 
             Ok(())
         })
-        .invoke_handler(generate_handler![
-            copy_dir,
-            start_device_listening
-            // start_gamepad_listing,  // Disabled: not needed for void_cat model
-            // stop_gamepad_listing  // Disabled: not needed for void_cat model
-        ])
+        .invoke_handler(generate_handler![copy_dir, start_device_listening])
         .plugin(tauri_plugin_custom_window::init())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_process::init())
@@ -53,7 +43,6 @@ pub fn run() {
         .plugin(
             tauri_plugin_log::Builder::new()
                 .timezone_strategy(tauri_plugin_log::TimezoneStrategy::UseLocal)
-                .filter(|metadata| !metadata.target().contains("gilrs"))
                 .build(),
         )
         .plugin(tauri_plugin_autostart::init(

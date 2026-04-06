@@ -10,11 +10,6 @@ import { useTauriListen } from './useTauriListen'
 import { useCatStore } from '@/stores/cat'
 import { inBetween } from '@/utils/is'
 
-interface MouseButtonEvent {
-  kind: 'MousePress' | 'MouseRelease'
-  value: string
-}
-
 export interface CursorPoint {
   x: number
   y: number
@@ -24,13 +19,6 @@ interface MouseMoveEvent {
   kind: 'MouseMove'
   value: CursorPoint
 }
-
-interface KeyboardEvent {
-  kind: 'KeyboardPress' | 'KeyboardRelease'
-  value: string
-}
-
-type DeviceEvent = MouseButtonEvent | MouseMoveEvent | KeyboardEvent
 
 export function useDevice() {
   const catStore = useCatStore()
@@ -61,12 +49,9 @@ export function useDevice() {
     }
   }
 
-  useTauriListen<DeviceEvent>(LISTEN_KEY.DEVICE_CHANGED, ({ payload }) => {
-    const { kind } = payload
-
-    // Only handle mouse move events, ignore keyboard and mouse clicks
-    if (kind === 'MouseMove') {
-      return handleCursorMove()
+  useTauriListen<MouseMoveEvent>(LISTEN_KEY.DEVICE_CHANGED, ({ payload }) => {
+    if (payload.kind === 'MouseMove') {
+      handleCursorMove()
     }
   })
 

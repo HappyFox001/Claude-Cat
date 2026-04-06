@@ -1,10 +1,8 @@
 import type { PhysicalPosition } from '@tauri-apps/api/dpi'
 
-import { LogicalSize } from '@tauri-apps/api/dpi'
 import { resolveResource, sep } from '@tauri-apps/api/path'
-import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import { message } from 'ant-design-vue'
-import { isNil, round } from 'es-toolkit'
+import { isNil } from 'es-toolkit'
 import { nth } from 'es-toolkit/compat'
 import { ref } from 'vue'
 
@@ -13,8 +11,6 @@ import live2d from '../utils/live2d'
 import { useCatStore } from '@/stores/cat'
 import { useModelStore } from '@/stores/model'
 import { getCursorMonitor } from '@/utils/monitor'
-
-const appWindow = getCurrentWebviewWindow()
 
 export interface ModelSize {
   width: number
@@ -97,9 +93,6 @@ export function useModel() {
   }
 
   async function handleMouseMove(cursorPoint: PhysicalPosition) {
-    // 动作播放中时跳过鼠标追随
-    if (live2d.isActionPlaying) return
-
     const monitor = await getCursorMonitor(cursorPoint)
 
     if (!monitor) return

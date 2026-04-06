@@ -11,7 +11,7 @@ import { useI18n } from 'vue-i18n'
 import { RouterView } from 'vue-router'
 
 import { useTauriListen } from './composables/useTauriListen'
-import { useThemeVars } from './composables/useThemeVars'
+import { catThemeToken, useThemeVars } from './composables/useThemeVars'
 import { useWindowState } from './composables/useWindowState'
 import { LANGUAGE, LISTEN_KEY } from './constants'
 import { getAntdLocale } from './locales/index.ts'
@@ -41,7 +41,6 @@ onMounted(async () => {
   await modelStore.$tauri.start()
   await modelStore.init()
   await catStore.$tauri.start()
-  catStore.init()
   await generalStore.$tauri.start()
   await generalStore.init()
   await shortcutStore.$tauri.start()
@@ -92,6 +91,7 @@ useEventListener('click', (event) => {
     :locale="getAntdLocale(generalStore.appearance.language)"
     :theme="{
       algorithm: generalStore.appearance.isDark ? darkAlgorithm : defaultAlgorithm,
+      token: catThemeToken,
     }"
   >
     <RouterView v-if="isRestored" />

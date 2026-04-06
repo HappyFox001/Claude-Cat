@@ -78,18 +78,10 @@
       "model": {
         "title": "模型管理",
         "labels": {
-          "deleteModel": "删除模型"
+          "voidCat": "虚空小黑猫"
         },
         "hints": {
-          "deleteSuccess": "删除成功",
-          "deleteModel": "你确定要删除此模型吗？",
-          "importSuccess": "导入成功",
-          "clickOrDragToImport": "点击或拖动至此区域导入"
-        },
-        "tooltips": {
-          "createModel": "制作模型",
-          "convertModel": "转换模型",
-          "moreModels": "更多模型"
+          "voidCatDesc": "你的 Claude Code 专属伙伴"
         }
       },
       "shortcut": {

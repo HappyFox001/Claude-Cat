@@ -39,7 +39,6 @@ tauri-plugin-clipboard-manager = "2"
 tauri-plugin-global-shortcut = "2"
 tauri-plugin-locale = "2"
 rdev = { git = "https://github.com/kunkunsh/rdev" }
-gilrs = { git = "https://github.com/ayangweb/gilrs", default-features = false, features = ["xinput"] }
 dirs = "6"
 log = "0.4"
 

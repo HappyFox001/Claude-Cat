@@ -1,8 +1,7 @@
 import { resolveResource } from '@tauri-apps/api/path'
-import { filter, find } from 'es-toolkit/compat'
 import { nanoid } from 'nanoid'
 import { defineStore } from 'pinia'
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 
 import { join } from '@/utils/path'
 
@@ -37,33 +36,21 @@ export const useModelStore = defineStore('model', () => {
   const currentModel = ref<Model>()
   const motions = ref<MotionGroup>({})
   const expressions = ref<Expression[]>([])
-  const supportKeys = reactive<Record<string, string>>({})
-  const pressedKeys = reactive<Record<string, string>>({})
 
   const init = async () => {
     const modelsPath = await resolveResource('assets/models')
 
-    const nextModels = filter(models.value, { isPreset: false })
-    const presetModels = filter(models.value, { isPreset: true })
-
-    const modes: ModelMode[] = ['void_cat_marinki']
-
-    for (const mode of modes) {
-      const matched = find(presetModels, { mode })
-
-      nextModels.unshift({
-        id: matched?.id ?? nanoid(),
-        mode,
-        isPreset: true,
-        path: join(modelsPath, mode),
-      })
+    // 只使用预设模型，始终更新路径确保正确
+    const presetModel: Model = {
+      id: currentModel.value?.id ?? nanoid(),
+      mode: 'void_cat_marinki',
+      isPreset: true,
+      path: join(modelsPath, 'void_cat_marinki'),
     }
 
-    const matched = find(nextModels, { id: currentModel.value?.id })
-
-    currentModel.value = matched ?? nextModels[0]
-
-    models.value = nextModels
+    // 始终更新 currentModel 确保路径正确
+    currentModel.value = presetModel
+    models.value = [presetModel]
   }
 
   return {
@@ -71,13 +58,12 @@ export const useModelStore = defineStore('model', () => {
     currentModel,
     motions,
     expressions,
-    supportKeys,
-    pressedKeys,
     init,
   }
 }, {
   tauri: {
-    filterKeys: ['models', 'currentModel'],
+    // 不持久化模型数据，因为路径在每次启动时需要重新解析
+    filterKeys: [],
     filterKeysStrategy: 'pick',
   },
 })
