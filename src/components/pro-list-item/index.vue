@@ -18,7 +18,7 @@ const hasDescription = computed(() => {
 <template>
   <Flex
     :align="vertical ? void 0 : 'center'"
-    class="b b-color-2 rounded-lg b-solid bg-color-3 p-4"
+    class="pro-list-item b b-color-2 rounded-lg b-solid bg-color-3 p-4"
     :gap="vertical ? 'middle' : 'large'"
     justify="space-between"
     :vertical="vertical"
@@ -27,6 +27,8 @@ const hasDescription = computed(() => {
       align="center"
       class="flex-1"
     >
+      <!-- 小指示器 -->
+      <span class="item-indicator">›</span>
       <Flex vertical>
         <div class="text-sm font-medium">
           {{ title }}
@@ -46,3 +48,28 @@ const hasDescription = computed(() => {
     <slot />
   </Flex>
 </template>
+
+<style scoped>
+.pro-list-item {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.pro-list-item:hover {
+  border-color: var(--color-primary-3);
+}
+
+.item-indicator {
+  font-family: var(--font-mono);
+  color: var(--color-primary-5);
+  margin-right: 8px;
+  font-size: 14px;
+  opacity: 0.6;
+  transition: all 0.2s;
+}
+
+.pro-list-item:hover .item-indicator {
+  opacity: 1;
+  transform: translateX(2px);
+}
+</style>
