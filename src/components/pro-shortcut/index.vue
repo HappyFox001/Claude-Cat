@@ -44,19 +44,17 @@ function getEventKey(event: KeyboardEvent) {
 }
 
 function isValidShortcut(keysToCheck: Key[]) {
-  // F1-F12 单独可用
-  if (keysToCheck?.[0]?.eventKey?.startsWith('F')) {
-    return true
+  // 允许任何单键或组合键
+  if (keysToCheck.length === 0) {
+    return false
   }
 
-  const hasModifierKey = some(keysToCheck, ({ eventKey }) => {
-    return some(modifierKeys, { eventKey })
-  })
+  // 检查是否包含至少一个标准键（非修饰键）
   const hasStandardKey = some(keysToCheck, ({ eventKey }) => {
     return some(standardKeys, { eventKey })
   })
 
-  return hasModifierKey && hasStandardKey
+  return hasStandardKey
 }
 
 function handleFocus() {
