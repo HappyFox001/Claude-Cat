@@ -134,13 +134,6 @@ onUnmounted(() => {
       class="thought-bubble-container"
       :style="{ '--bubble-scale': bubbleScale, '--accent-color': currentColor }"
     >
-      <!-- 思考小圆点 -->
-      <div class="thought-dots">
-        <div class="dot dot-1" />
-        <div class="dot dot-2" />
-        <div class="dot dot-3" />
-      </div>
-
       <!-- 主气泡 -->
       <div class="thought-bubble">
         <div class="bubble-inner">
@@ -164,6 +157,13 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
+
+      <!-- 思考小圆点 - 在气泡和头部之间 -->
+      <div class="thought-dots">
+        <div class="dot dot-1" />
+        <div class="dot dot-2" />
+        <div class="dot dot-3" />
+      </div>
     </div>
   </Transition>
 </template>
@@ -175,22 +175,21 @@ onUnmounted(() => {
   top: 24px;
   z-index: 100;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
   transform: scale(var(--bubble-scale));
-  transform-origin: bottom right;
+  transform-origin: right center;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: none;
 }
 
-/* 思考小圆点 - 从小到大排列 */
+/* 思考小圆点 - 水平排列，从小到大指向猫头 */
 .thought-dots {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  align-items: center;
   gap: 6px;
-  padding-right: 8px;
 }
 
 .dot {
@@ -223,11 +222,11 @@ onUnmounted(() => {
 @keyframes dotFloat {
   0%,
   100% {
-    transform: translateY(0) scale(1);
+    transform: translateX(0) scale(1);
     opacity: 0.8;
   }
   50% {
-    transform: translateY(-3px) scale(1.1);
+    transform: translateX(2px) scale(1.1);
     opacity: 1;
   }
 }
@@ -260,19 +259,6 @@ onUnmounted(() => {
     transform: scale(1);
     opacity: 1;
   }
-}
-
-/* 气泡左侧的小突起，连接到圆点 */
-.thought-bubble::before {
-  content: '';
-  position: absolute;
-  right: 20px;
-  bottom: -8px;
-  width: 16px;
-  height: 16px;
-  background: linear-gradient(145deg, #242424 0%, #1e1e1e 100%);
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .bubble-inner {
@@ -350,7 +336,7 @@ onUnmounted(() => {
 .bubble-enter-from,
 .bubble-leave-to {
   opacity: 0;
-  transform: scale(0.5) translateY(10px);
+  transform: scale(0.5) translateX(-10px);
 }
 
 /* 悬停效果 */

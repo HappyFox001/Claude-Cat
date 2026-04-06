@@ -1,32 +1,38 @@
 <script setup lang="ts">
-import { InputNumber, Slider, Switch } from 'ant-design-vue'
+import { disable, enable, isEnabled } from '@tauri-apps/plugin-autostart'
+import { InputNumber, Select, Slider, Switch } from 'ant-design-vue'
+import { watch } from 'vue'
+
+import MacosPermissions from '../general/components/macos-permissions/index.vue'
+import ThemeMode from '../general/components/theme-mode/index.vue'
 
 import Position from './components/position/index.vue'
 
 import ProList from '@/components/pro-list/index.vue'
 import ProListItem from '@/components/pro-list-item/index.vue'
 import { useCatStore } from '@/stores/cat'
+import { useGeneralStore } from '@/stores/general'
 
+const generalStore = useGeneralStore()
 const catStore = useCatStore()
+
+watch(() => generalStore.app.autostart, async (value) => {
+  const enabled = await isEnabled()
+
+  if (value && !enabled) {
+    return enable()
+  }
+
+  if (!value && enabled) {
+    disable()
+  }
+}, { immediate: true })
 </script>
 
 <template>
-  <ProList :title="$t('pages.preference.cat.labels.modelSettings')">
-    <ProListItem
-      :description="$t('pages.preference.cat.hints.mirrorMode')"
-      :title="$t('pages.preference.cat.labels.mirrorMode')"
-    >
-      <Switch v-model:checked="catStore.model.mirror" />
-    </ProListItem>
+  <MacosPermissions />
 
-    <ProListItem
-      :description="$t('pages.preference.cat.hints.mouseMirror')"
-      :title="$t('pages.preference.cat.labels.mouseMirror')"
-    >
-      <Switch v-model:checked="catStore.model.mouseMirror" />
-    </ProListItem>
-  </ProList>
-
+  <!-- 窗口设置 -->
   <ProList :title="$t('pages.preference.cat.labels.windowSettings')">
     <Position />
 
@@ -84,6 +90,49 @@ const catStore = useCatStore()
         :min="10"
         :tip-formatter="(value) => `${value}%`"
       />
+    </ProListItem>
+  </ProList>
+
+  <!-- 应用设置 -->
+  <ProList :title="$t('pages.preference.general.labels.appSettings')">
+    <ProListItem :title="$t('pages.preference.general.labels.launchOnStartup')">
+      <Switch v-model:checked="generalStore.app.autostart" />
+    </ProListItem>
+
+    <ProListItem
+      :description="$t('pages.preference.general.hints.showTaskbarIcon')"
+      :title="$t('pages.preference.general.labels.showTaskbarIcon')"
+    >
+      <Switch v-model:checked="generalStore.app.taskbarVisible" />
+    </ProListItem>
+  </ProList>
+
+  <!-- 外观设置 -->
+  <ProList :title="$t('pages.preference.general.labels.appearanceSettings')">
+    <ThemeMode />
+
+    <ProListItem :title="$t('pages.preference.general.labels.language')">
+      <Select v-model:value="generalStore.appearance.language">
+        <Select.Option value="zh-CN">
+          简体中文
+        </Select.Option>
+        <Select.Option value="en-US">
+          English
+        </Select.Option>
+        <Select.Option value="vi-VN">
+          Tiếng Việt
+        </Select.Option>
+        <Select.Option value="pt-BR">
+          Português
+        </Select.Option>
+      </Select>
+    </ProListItem>
+  </ProList>
+
+  <!-- 更新设置 -->
+  <ProList :title="$t('pages.preference.general.labels.updateSettings')">
+    <ProListItem :title="$t('pages.preference.general.labels.autoCheckUpdate')">
+      <Switch v-model:checked="generalStore.update.autoCheck" />
     </ProListItem>
   </ProList>
 </template>

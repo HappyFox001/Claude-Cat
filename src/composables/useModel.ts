@@ -1,14 +1,12 @@
 import type { PhysicalPosition } from '@tauri-apps/api/dpi'
 
-import { resolveResource, sep } from '@tauri-apps/api/path'
+import { resolveResource } from '@tauri-apps/api/path'
 import { message } from 'ant-design-vue'
 import { isNil } from 'es-toolkit'
-import { nth } from 'es-toolkit/compat'
 import { ref } from 'vue'
 
 import live2d from '../utils/live2d'
 
-import { useCatStore } from '@/stores/cat'
 import { useModelStore } from '@/stores/model'
 import { getCursorMonitor } from '@/utils/monitor'
 
@@ -19,7 +17,6 @@ export interface ModelSize {
 
 export function useModel() {
   const modelStore = useModelStore()
-  const catStore = useCatStore()
   const modelSize = ref<ModelSize>()
 
   async function handleLoad() {
@@ -61,18 +58,6 @@ export function useModel() {
 
     if (!path) return
 
-    if (catStore.model.single) {
-      const dirName = nth(path.split(sep()), -2)!
-
-      const filterKeys = Object.entries(modelStore.pressedKeys).filter(([, value]) => {
-        return value.includes(dirName)
-      })
-
-      for (const [key] of filterKeys) {
-        handleRelease(key)
-      }
-    }
-
     modelStore.pressedKeys[key] = path
   }
 
@@ -110,11 +95,7 @@ export function useModel() {
       const isXAxis = id.endsWith('X')
 
       const ratio = isXAxis ? xRatio : yRatio
-      let value = max - (ratio * (max - min))
-
-      if (isXAxis && catStore.model.mouseMirror) {
-        value *= -1
-      }
+      const value = max - (ratio * (max - min))
 
       live2d.setParameterValue(id, value)
     }

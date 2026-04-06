@@ -1,5 +1,6 @@
 import { useTauriListen } from './useTauriListen'
 
+import { type ClaudeState, EXPRESSIONS, useCatStore } from '@/stores/cat'
 import { useStatsStore } from '@/stores/statistics'
 import live2d from '@/utils/live2d'
 
@@ -9,39 +10,11 @@ interface ClaudeStatus {
   detail?: string
 }
 
-// Map Claude Code states to Live2D expression indices
-const STATE_TO_EXPRESSION: Record<string, number> = {
-  idle: 0, // normal - 普通猫瞳
-  thinking: 1, // question - 疑问
-  coding: 0, // normal - 专注
-  reading: 1, // question - 好奇
-  running: 6, // excited - 兴奋
-  error: 2, // angry - 生气
-  celebrate: 6, // excited - 庆祝
-  failed: 3, // sad - API/工具失败
-  denied: 5, // surprised - 权限被拒
-  busy: 7, // fluffy - 子代理运行中
-  searching: 1, // question - 网络搜索
-}
-
-const EXPRESSION_NAMES = [
-  'normal',
-  'question',
-  'angry',
-  'sad',
-  'cry',
-  'surprised',
-  'excited',
-  'fluffy',
-  'knife',
-  'long',
-  'no_pupil',
-]
-
 let lastState = ''
 
 export function useClaudeState() {
   const statsStore = useStatsStore()
+  const catStore = useCatStore()
 
   const changeExpression = (state: string, detail?: string) => {
     // 相同状态不重复触发
@@ -49,13 +22,10 @@ export function useClaudeState() {
       return
     }
 
-    const expressionIndex = STATE_TO_EXPRESSION[state]
-    if (expressionIndex === undefined) {
-      console.warn(`[Claude State] Unknown state: ${state}`)
-      return
-    }
+    // 从 store 获取随机表情
+    const expressionIndex = catStore.getRandomExpression(state as ClaudeState)
+    const expressionName = EXPRESSIONS[expressionIndex]?.name || 'unknown'
 
-    const expressionName = EXPRESSION_NAMES[expressionIndex] || 'unknown'
     console.warn(
       `[Claude State] ${lastState} → ${state} (Expression: ${expressionName})`,
     )

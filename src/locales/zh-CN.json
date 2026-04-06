@@ -25,6 +25,7 @@
           "position": "窗口位置"
         },
         "hints": {
+          "movedToGeneral": "设置项已移至猫咪设置",
           "mirrorMode": "启用后，模型将水平镜像翻转。",
           "singleMode": "启用后，每只手只显示最后按下的一个按键。",
           "mouseMirror": "启用后，鼠标将镜像跟随手部移动。",
@@ -62,6 +63,7 @@
           "darkMode": "暗色模式"
         },
         "hints": {
+          "movedToGeneral": "设置项已移至通用设置",
           "showTaskbarIcon": "启用后，即可通过 OBS Studio 捕获窗口。",
           "inputMonitoringPermission": "开启输入监控权限，以便接收系统的键盘和鼠标事件来响应你的操作。",
           "inputMonitoringPermissionGuide": "如果权限已开启，请先选中并点击“-”按钮将其删除，然后重新手动添加，最后重启应用以确保权限生效。"

@@ -25,6 +25,7 @@
           "position": "Window Position"
         },
         "hints": {
+          "movedToGeneral": "Settings moved to Cat Settings",
           "mirrorMode": "When enabled, the model will be mirrored horizontally.",
           "singleMode": "When enabled, only the last pressed key is displayed for each hand.",
           "mouseMirror": "When enabled, the mouse will mirror the hand movement.",
@@ -62,6 +63,7 @@
           "darkMode": "Dark"
         },
         "hints": {
+          "movedToGeneral": "Settings moved to General Settings",
           "showTaskbarIcon": "When enabled, the window can be captured via OBS Studio.",
           "inputMonitoringPermission": "Enable input monitoring to receive keyboard and mouse events from the system.",
           "inputMonitoringPermissionGuide": "If the permission is already enabled, select it and click the \"-\" button to remove it, then manually add it again and restart the app."

@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "BongoCat",
+  "productName": "Claude Cat",
   "version": "../package.json",
   "identifier": "com.ayangweb.BongoCat",
   "build": {
@@ -14,7 +14,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "BongoCat",
+        "title": "Claude Cat",
         "url": "index.html/#/",
         "shadow": false,
         "alwaysOnTop": true,
@@ -51,7 +51,7 @@
     "category": "Entertainment",
     "createUpdaterArtifacts": true,
     "targets": ["nsis", "dmg", "app", "appimage", "deb", "rpm"],
-    "shortDescription": "BongoCat",
+    "shortDescription": "Claude Cat - 桌面伴侣",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

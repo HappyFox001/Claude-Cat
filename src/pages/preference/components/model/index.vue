@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { convertFileSrc } from '@tauri-apps/api/core'
 import { revealItemInDir } from '@tauri-apps/plugin-opener'
 import { Card } from 'ant-design-vue'
 
 import { useModelStore } from '@/stores/model'
-import { join } from '@/utils/path'
 
 const modelStore = useModelStore()
 </script>
@@ -20,7 +18,8 @@ const modelStore = useModelStore()
       <template #cover>
         <img
           alt="Void Cat"
-          :src="convertFileSrc(join(modelStore.currentModel.path, 'resources', 'cover.png'))"
+          class="p-4"
+          src="/logo.png"
         >
       </template>
 

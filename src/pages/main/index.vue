@@ -14,14 +14,22 @@ import { useClaudeState } from '@/composables/useClaudeState'
 import { useDevice } from '@/composables/useDevice'
 import { useModel } from '@/composables/useModel'
 import { useSharedMenu } from '@/composables/useSharedMenu'
+import { useTauriListen } from '@/composables/useTauriListen'
 import { useWindowPosition } from '@/composables/useWindowPosition'
 import { hideWindow, setAlwaysOnTop, setTaskbarVisibility, showWindow } from '@/plugins/window'
 import { useCatStore } from '@/stores/cat'
 import { useGeneralStore } from '@/stores/general.ts'
 import { useModelStore } from '@/stores/model'
+import live2d from '@/utils/live2d'
 import { join } from '@/utils/path'
 
 useClaudeState() // Initialize Claude state listener
+
+// 监听表情预览事件（来自偏好设置窗口）
+useTauriListen<{ index: number }>('preview-expression', ({ payload }) => {
+  live2d.playExpressions(payload.index)
+})
+
 const { startListening } = useDevice()
 const appWindow = getCurrentWebviewWindow()
 const { modelSize, handleLoad, handleDestroy, handleResize } = useModel()
@@ -137,7 +145,6 @@ function handleMouseMove(event: MouseEvent) {
   <div
     v-show="isMounted"
     class="relative size-screen overflow-hidden children:(absolute size-full)"
-    :class="{ '-scale-x-100': catStore.model.mirror }"
     :style="{
       opacity: catStore.window.opacity / 100,
       borderRadius: `${catStore.window.radius}%`,
