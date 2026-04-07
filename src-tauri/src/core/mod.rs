@@ -1,3 +1,4 @@
+pub mod claude_hooks;
 pub mod claude_status;
 pub mod device;
 pub mod prevent_default;

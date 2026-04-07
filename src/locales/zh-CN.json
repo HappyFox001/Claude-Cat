@@ -41,6 +41,28 @@
           "topRight": "右上角",
           "bottomLeft": "左下角",
           "bottomRight": "右下角"
+        },
+        "claudeHooks": {
+          "title": "Claude 状态监听",
+          "status": "配置状态",
+          "description": "检测并配置 Claude Code 的 hooks，让猫咪能够实时响应你的工作状态。",
+          "checking": "检测中...",
+          "configured": "已配置 ✓",
+          "notConfigured": "未配置",
+          "settingsNotFound": "未找到 Claude 配置文件",
+          "scriptNotFound": "未找到 Hook 脚本",
+          "settingsFile": "配置文件",
+          "hookScript": "Hook 脚本",
+          "configuredHooks": "已配置的 Hooks",
+          "refresh": "刷新状态",
+          "installButton": "一键配置",
+          "openSettings": "打开配置文件",
+          "checkError": "检测失败: {error}",
+          "installSuccess": "Hooks 配置成功！",
+          "installError": "配置失败: {error}",
+          "settingsOpened": "已打开配置文件",
+          "openError": "打开失败: {error}",
+          "helpText": "点击「一键配置」将自动为 Claude Code 添加必要的 hooks 配置。配置完成后请重启 Claude Code 以使更改生效。"
         }
       },
       "general": {

@@ -6,6 +6,7 @@ import { watch } from 'vue'
 import MacosPermissions from '../general/components/macos-permissions/index.vue'
 import ThemeMode from '../general/components/theme-mode/index.vue'
 
+import ClaudeHooksStatus from './components/claude-hooks-status/index.vue'
 import Position from './components/position/index.vue'
 
 import ProList from '@/components/pro-list/index.vue'
@@ -31,6 +32,9 @@ watch(() => generalStore.app.autostart, async (value) => {
 
 <template>
   <MacosPermissions />
+
+  <!-- Claude Hooks 状态 -->
+  <ClaudeHooksStatus />
 
   <!-- 窗口设置 -->
   <ProList :title="$t('pages.preference.cat.labels.windowSettings')">

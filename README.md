@@ -1,151 +1,99 @@
-![BongoCat](https://socialify.git.ci/ayangweb/BongoCat/image?custom_description=&description=1&font=Source+Code+Pro&forks=1&issues=1&logo=https%3A%2F%2Fgithub.com%2Fayangweb%2FBongoCat%2Fblob%2Fmaster%2Fsrc-tauri%2Fassets%2Flogo-mac.png%3Fraw%3Dtrue&name=1&owner=1&pattern=Floating+Cogs&pulls=1&stargazers=1&theme=Auto)
+<h1 style="border-bottom: none" align="center">
+  Claude Cat
+  <br />
+  <p>你的桌面 AI 小伙伴</p>
+</h1>
 
 <div align="center">
-  <div>
-    <a href="https://github.com/ayangweb/BongoCat/releases"><img alt="Windows" src="https://img.shields.io/badge/-Windows-blue?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB0PSIxNzI2MzA1OTcxMDA2IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE1NDgiIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4Ij48cGF0aCBkPSJNNTI3LjI3NTU1MTYxIDk2Ljk3MTAzMDEzdjM3My45OTIxMDY2N2g0OTQuNTEzNjE5NzVWMTUuMDI2NzU3NTN6TTUyNy4yNzU1NTE2MSA5MjguMzIzNTA4MTVsNDk0LjUxMzYxOTc1IDgwLjUyMDI4MDQ5di00NTUuNjc3NDcxNjFoLTQ5NC41MTM2MTk3NXpNNC42NzA0NTEzNiA0NzAuODMzNjgyOTdINDIyLjY3Njg1OTI1VjExMC41NjM2ODE5N2wtNDE4LjAwNjQwNzg5IDY5LjI1Nzc5NzUzek00LjY3MDQ1MTM2IDg0Ni43Njc1OTcwM0w0MjIuNjc2ODU5MjUgOTE0Ljg2MDMxMDEzVjU1My4xNjYzMTcwM0g0LjY3MDQ1MTM2eiIgcC1pZD0iMTU0OSIgZmlsbD0iI2ZmZmZmZiI+PC9wYXRoPjwvc3ZnPg==" /></a>
-    <a href="https://github.com/ayangweb/BongoCat/releases"><img alt="MacOS" src="https://img.shields.io/badge/-MacOS-black?style=flat-square&logo=apple&logoColor=white" /></a>
-    <a href="https://github.com/ayangweb/BongoCat/releases"><img alt="Linux" src="https://img.shields.io/badge/-Linux-yellow?style=flat-square&logo=linux&logoColor=white" /></a>
+  <blockquote>
+    <em><strong>一只可爱的桌面宠物，实时映射你的 Claude Code 工作流</strong></em>
+  </blockquote>
+ </div>
+
+<br>
+
+![Claude Cat](/public/banner.png)
+
+<p align="center">
+  <em>一只会随 Claude Code 状态实时同步的可爱 Live2D 桌宠</em>
+  <br>
+  <em>献给希望用萌宠追踪 AI 辅助工作流的开发者</em>
+</p>
+
+<br>
+
+<div align="center">
+  <em><strong>编码、思考、庆祝——一切都由你的猫猫呈现</strong></em>
   </div>
 
-  <p>
-    <a href="./LICENSE"><img src="https://img.shields.io/github/license/ayangweb/BongoCat?style=flat-square" /></a>
-    <a href="https://github.com/ayangweb/BongoCat/releases/latest"><img src="https://img.shields.io/github/package-json/v/ayangweb/BongoCat?style=flat-square"/></a>
-    <a href="https://github.com/ayangweb/BongoCat/releases"><img src="https://img.shields.io/github/downloads/ayangweb/BongoCat/total?style=flat-square"/></a>
-  </p>
+<br>
 
-  <p>
-    <a href="https://trendshift.io/developers/8507" target="_blank"><img src="https://trendshift.io/api/badge/developers/8507" alt="ayangweb | Trendshift" width="250" height="55" /></a>
-    <a href="https://trendshift.io/repositories/14605" target="_blank"><img src="https://trendshift.io/api/badge/repositories/14605" alt="ayangweb%2FBongoCat | Trendshift" width="250" height="55" /></a>
-    <a href="https://hellogithub.com/repository/7d23863fd4be47b39e816193ded385c9" target="_blank">
-      <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=7d23863fd4be47b39e816193ded385c9&claim_uid=5ihRVIuTYBmSGtQ&theme=dark" />
-        <source media="(prefers-color-scheme: light)" srcset="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=7d23863fd4be47b39e816193ded385c9&claim_uid=5ihRVIuTYBmSGtQ&theme=neutral" />
-        <img alt="Star History Chart" src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=7d23863fd4be47b39e816193ded385c9&claim_uid=5ihRVIuTYBmSGtQ&theme=neutral" width="250" height="55" />
-      </picture>
-    </a>
-  </p>
+## 快速开始
+
+| 什么是 Claude Cat |
+| :---------------- |
+
+Claude Cat 是一款跨平台的桌面宠物应用，把一只 Live2D 猫猫带到你的屏幕上。不同于传统桌宠，它与 **Claude Code** 深度集成，通过丰富的表情与状态指示，实时反映你的 AI 开发工作流。
+
+看它如何与你互动：
+
+- 🤔 当 Claude 正在处理时进入思考
+- 💻 当你编码时跟着敲键盘
+- 🎉 任务完成时一起庆祝
+- 😢 出错时做出反应
+- 💤 空闲时安静休息
+
+| 致谢 |
+| :--- |
+
+- 项目基于 [BongoCat](https://github.com/ayangweb/BongoCat) 和 [code-pet](https://github.com/Xiaooolong/code-pet) 二次开发 ，感谢两个伟大的项目陪伴了我无聊的 Vibe Coding 时光。
+
+| 工作原理 |
+| :------- |
+
+Claude Cat 会监控 Claude Code 的状态文件（`~/.bongo-cat/status.json`），把 AI 活动转化为直观的可视化反馈：
+
+**状态 → 表情映射**：
+
+- `idle` → 正常 😺
+- `thinking` → 思考/疑惑 🤔
+- `coding` → 专注编码 💻
+- `reading` → 阅读专注 📖
+- `searching` → 好奇搜索 🔍
+- `running_command` → 正在执行 ⚡
+- `writing` → 创作书写 ✍️
+- `success` → 成功/兴奋 🎉
+- `error` → 难过/生气 😢😾
+- `waiting_user` → 等待用户 👀
+- `celebrate` → 超开心 🎊
+
+同一状态可映射到多个表情（随机选择），更加生动有趣！
+
+| 配置 |
+| :--- |
+
+**偏好设置**（按配置的快捷键或点击托盘图标）：
+
+- 🐱 **猫猫设置**：窗口大小、透明度、置顶、悬停隐藏
+- 🎭 **表情映射**：为每个 Claude 状态自定义表情
+- ⌨️ **快捷键**：配置全局热键
+- 🎨 **模型管理**：导入与切换 Live2D 模型
+- 📊 **统计**：查看每日工作指标与分析
+- 🌍 **语言**：切换界面语言
+
+**状态文件设置**：
+Claude Cat 会读取 `~/.bongo-cat/status.json`。请确保 Claude Code 已配置将状态更新写入该文件。
+
+| 许可证 |
+| :----- |
+
+本项目以「MIT 许可证」发布。你可以自由地使用、复制、修改、合并、出版、分发、再许可及/或销售本软件的副本，但需在副本中包含版权与许可声明。
+
+有关详情，请查阅仓库中的 `LICENSE` 文件。
+
+---
+
+<div align="center">
+  <p><strong>由开发者用 ❤️ 打造，献给开发者</strong></p>
+  <p><em>愿这只猫猫为你的每次编码增添乐趣</em></p>
 </div>
-
-| macOS                                                                                        | Windows                                                                                        | Linux(x11)                                                                                   |
-| -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| ![macOS](https://i0.hdslb.com/bfs/openplatform/dff276b96d49c5d6c431b74b531aab72191b3d87.png) | ![Windows](https://i0.hdslb.com/bfs/openplatform/a4149b753856ee7f401989da902cf3b5ad35b39e.png) | ![Linux](https://i0.hdslb.com/bfs/openplatform/3b49f961819d3ff63b2b80251c1cc13c27e986b0.png) |
-
-## 赞助商
-
-<a href="https://www.toolsetlink.com">
-  <img height="54" alt="UpgradeLink" src="https://github.com/user-attachments/assets/6b84fb0f-3f1d-44b5-9932-2298bc999d8d" />
-</a>
-
-## 开发背景
-
-本项目的灵感来源于 [MMmmmoko](https://github.com/MMmmmoko) 大佬开发的 [Bongo-Cat-Mver](https://github.com/MMmmmoko/Bongo-Cat-Mver)。它以独特的猫咪互动功能深受用户喜爱，但仅支持 Windows 平台。作为一名深度 macOS 用户，我特别希望在自己的设备上也能使用这款可爱的猫咪，于是我决定开发一个适配 macOS 的版本。
-
-同时，得益于 [Tauri](https://github.com/tauri-apps/tauri) 强大的跨平台能力，本项目不仅支持 macOS，还兼容 Windows 和 Linux(x11)，让更多的用户都能与这只可爱的猫咪互动！
-
-## 下载
-
-- [夸克网盘](https://pan.quark.cn/s/70f2f2663ce1)
-- [GitHub Releases](https://github.com/ayangweb/BongoCat/releases)
-
-不确定下载哪一个？请查阅[下载指南](.github/DOWNLOAD_GUIDE.md)。
-
-## 功能介绍
-
-- 适配 macOS、Windows 和 Linux(x11)。
-- 根据键盘、鼠标或手柄的操作，同步对应的动作。
-- 支持导入自定义模型，自由打造专属猫咪形象。
-- 完全开源，代码公开透明，绝不收集任何用户数据。
-- 支持离线运行，无需联网，保护用户隐私。
-
-## 模型转换
-
-如果你想将 Bongo-Cat-Mver 应用中的模型转换为兼容 BongoCat 的格式，可以使用以下工具：
-
-🔗 [在线转换](https://bongocat.vteamer.cc)
-
-## 更多模型
-
-你可以在这个仓库中探索、下载更多猫咪模型，或提交你的创作，与大家一起分享：
-
-📦 [Awesome-BongoCat](https://github.com/ayangweb/Awesome-BongoCat)
-
-## 社区交流
-
-<table>
-  <thead>
-    <tr>
-      <th>QQ 群 1</th>
-      <th>QQ 群 2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <a href="https://qm.qq.com/q/AS3gNv2Vzy">
-          <picture>
-            <source
-              media="(prefers-color-scheme: dark)"
-              srcset="https://i0.hdslb.com/bfs/openplatform/8ecdc4982ab01b59d7731fcca3ec26631a274560.png"
-            />
-            <source
-              media="(prefers-color-scheme: light)"
-              srcset="https://i0.hdslb.com/bfs/openplatform/09f56580397063e1819c4c2ed63d07dee12720e1.png"
-            />
-            <img
-              alt="QQ Group 1"
-              src="https://i0.hdslb.com/bfs/openplatform/09f56580397063e1819c4c2ed63d07dee12720e1.png"
-              height="250"
-            />
-          </picture>
-        </a>
-      </td>
-      <td>
-        <a href="https://qm.qq.com/q/TmltLAod2O">
-          <picture>
-            <source
-              media="(prefers-color-scheme: dark)"
-              srcset="https://i0.hdslb.com/bfs/openplatform/473c522487ff33e0f32b15466aeb0734f17161c8.png"
-            />
-            <source
-              media="(prefers-color-scheme: light)"
-              srcset="https://i0.hdslb.com/bfs/openplatform/d5ae8c5af6ae1d0a1f066705ee822d1287384cf6.png"
-            />
-            <img
-              alt="QQ Group 2"
-              src="https://i0.hdslb.com/bfs/openplatform/d5ae8c5af6ae1d0a1f066705ee822d1287384cf6.png"
-              height="250"
-            />
-          </picture>
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-## 赞赏
-
-每一份认可都值得被珍视！赞赏随缘，心意无价，谢谢你的支持 ❤️
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://i0.hdslb.com/bfs/openplatform/e7438bff14cdfb6bfd0feacbb482f99ea4093294.png" />
-  <source media="(prefers-color-scheme: light)" srcset="https://i0.hdslb.com/bfs/openplatform/da55cc3ec1556580c91e59f589792866c998c7c6.png" />
-  <img alt="微信赞赏码" src="https://i0.hdslb.com/bfs/openplatform/da55cc3ec1556580c91e59f589792866c998c7c6.png" height="250" />
-</picture>
-
-## 贡献指南
-
-感谢大家为 BongoCat 做出的宝贵贡献！如果你也希望为 BongoCat 做出贡献，请查阅[贡献指南](.github/CONTRIBUTING.md)。
-
-<a href="https://openomy.com/ayangweb/BongoCat" target="_blank" style="display: block; width: 100%;" align="center">
-  <img src="https://openomy.com/svg?repo=ayangweb/BongoCat&chart=bubble" alt="Contribution Leaderboard" style="display: block; width: 100%;" />
-</a>
-
-## 历史星标
-
-<a href="https://www.star-history.com/#ayangweb/BongoCat&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=ayangweb/BongoCat&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=ayangweb/BongoCat&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=ayangweb/BongoCat&type=Date" />
- </picture>
-</a>

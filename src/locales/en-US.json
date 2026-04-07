@@ -41,6 +41,28 @@
           "topRight": "Top Right",
           "bottomLeft": "Bottom Left",
           "bottomRight": "Bottom Right"
+        },
+        "claudeHooks": {
+          "title": "Claude Status Monitoring",
+          "status": "Configuration Status",
+          "description": "Detect and configure Claude Code hooks to enable real-time status synchronization with your cat.",
+          "checking": "Checking...",
+          "configured": "Configured ✓",
+          "notConfigured": "Not Configured",
+          "settingsNotFound": "Claude settings file not found",
+          "scriptNotFound": "Hook script not found",
+          "settingsFile": "Settings File",
+          "hookScript": "Hook Script",
+          "configuredHooks": "Configured Hooks",
+          "refresh": "Refresh",
+          "installButton": "One-Click Setup",
+          "openSettings": "Open Settings",
+          "checkError": "Check failed: {error}",
+          "installSuccess": "Hooks configured successfully!",
+          "installError": "Configuration failed: {error}",
+          "settingsOpened": "Settings file opened",
+          "openError": "Failed to open: {error}",
+          "helpText": "Click 'One-Click Setup' to automatically configure necessary hooks for Claude Code. Please restart Claude Code after configuration to apply changes."
         }
       },
       "general": {

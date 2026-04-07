@@ -1,7 +1,13 @@
 mod core;
 mod utils;
 
-use core::{claude_status::StatusWatcher, device::start_device_listening, prevent_default, setup};
+use core::{
+    claude_hooks::{check_claude_hooks_status, debug_hook_paths, install_claude_hooks, open_claude_settings},
+    claude_status::StatusWatcher,
+    device::start_device_listening,
+    prevent_default,
+    setup,
+};
 use tauri::{Manager, WindowEvent, generate_handler};
 use tauri_plugin_autostart::MacosLauncher;
 use tauri_plugin_custom_window::{
@@ -27,7 +33,14 @@ pub fn run() {
 
             Ok(())
         })
-        .invoke_handler(generate_handler![copy_dir, start_device_listening])
+        .invoke_handler(generate_handler![
+            copy_dir,
+            start_device_listening,
+            check_claude_hooks_status,
+            install_claude_hooks,
+            open_claude_settings,
+            debug_hook_paths
+        ])
         .plugin(tauri_plugin_custom_window::init())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_process::init())
