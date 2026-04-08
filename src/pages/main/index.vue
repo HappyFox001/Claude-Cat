@@ -17,7 +17,7 @@ import { useSharedMenu } from '@/composables/useSharedMenu'
 import { useTauriListen } from '@/composables/useTauriListen'
 import { useWindowPosition } from '@/composables/useWindowPosition'
 import { hideWindow, setAlwaysOnTop, setTaskbarVisibility, showWindow } from '@/plugins/window'
-import { useCatStore } from '@/stores/cat'
+import { MAX_SCALE, MIN_SCALE, useCatStore } from '@/stores/cat'
 import { useGeneralStore } from '@/stores/general.ts'
 import { useModelStore } from '@/stores/model'
 import live2d from '@/utils/live2d'
@@ -120,9 +120,9 @@ function handleMouseMove(event: MouseEvent) {
   if (buttons !== 2 || !shiftKey) return
 
   const delta = (movementX + movementY) * 0.5
-  const nextScale = Math.max(10, Math.min(catStore.window.scale + delta, 500))
+  const nextScale = Math.max(MIN_SCALE, Math.min(catStore.window.scale + delta, MAX_SCALE))
 
-  catStore.window.scale = round(nextScale)
+  catStore.setScale(round(nextScale))
 }
 </script>
 

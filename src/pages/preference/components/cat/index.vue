@@ -11,7 +11,7 @@ import Position from './components/position/index.vue'
 
 import ProList from '@/components/pro-list/index.vue'
 import ProListItem from '@/components/pro-list-item/index.vue'
-import { useCatStore } from '@/stores/cat'
+import { MAX_SCALE, MIN_SCALE, useCatStore } from '@/stores/cat'
 import { useGeneralStore } from '@/stores/general'
 
 const generalStore = useGeneralStore()
@@ -69,8 +69,8 @@ watch(() => generalStore.app.autostart, async (value) => {
         v-model:value="catStore.window.scale"
         addon-after="%"
         class="w-28"
-        :max="500"
-        :min="1"
+        :max="MAX_SCALE"
+        :min="MIN_SCALE"
       />
     </ProListItem>
 

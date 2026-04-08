@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { reactive } from 'vue'
+import { reactive, watch } from 'vue'
 
 // 可用的表情列表
 export const EXPRESSIONS = [
@@ -49,6 +49,19 @@ export const DEFAULT_EXPRESSION_MAPPING: ExpressionMapping = {
   searching: [1, 5],
 }
 
+// 缩放比例限制常量
+export const MIN_SCALE = 20 // 最小20%
+export const MAX_SCALE = 500 // 最大500%
+export const DEFAULT_SCALE = 100 // 默认100%
+
+function normalizeScale(value: unknown) {
+  const numericValue = typeof value === 'number' ? value : Number(value)
+
+  if (Number.isNaN(numericValue)) return MIN_SCALE
+
+  return Math.max(MIN_SCALE, Math.min(MAX_SCALE, numericValue))
+}
+
 export interface CatStore {
   window: {
     visible: boolean
@@ -68,7 +81,7 @@ export const useCatStore = defineStore('cat', () => {
     visible: true,
     passThrough: false,
     alwaysOnTop: false,
-    scale: 100,
+    scale: DEFAULT_SCALE,
     opacity: 100,
     radius: 0,
     hideOnHover: false,
@@ -88,10 +101,25 @@ export const useCatStore = defineStore('cat', () => {
     Object.assign(expressions, DEFAULT_EXPRESSION_MAPPING)
   }
 
+  // 设置缩放比例（带验证）
+  function setScale(value: number) {
+    window.scale = normalizeScale(value)
+  }
+
+  // 监听并自动纠正缩放值（持久化加载或表单输入异常时）
+  watch(() => window.scale, (value) => {
+    const normalized = normalizeScale(value)
+    if (normalized === value) return
+
+    console.warn(`[CatStore] Scale value ${value}% is out of range, resetting to ${normalized}%`)
+    window.scale = normalized
+  }, { immediate: true })
+
   return {
     window,
     expressions,
     getRandomExpression,
     resetExpressions,
+    setScale,
   }
 })

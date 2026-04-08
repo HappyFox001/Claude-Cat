@@ -18,7 +18,7 @@ export function useSharedMenu() {
         text: `${item}%`,
         checked: catStore.window.scale === item,
         action: () => {
-          catStore.window.scale = item
+          catStore.setScale(item)
         },
       })
     })
