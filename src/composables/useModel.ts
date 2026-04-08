@@ -31,9 +31,9 @@ export function useModel() {
 
       modelSize.value = { width, height }
 
-      // 调整模型渲染缩放以适应当前窗口
-      // 窗口大小会由 scale watch 自动设置
-      handleResize()
+      // 不需要立即调用 handleResize()
+      // 窗口大小会由 main/index.vue 的 scale watch 自动设置
+      // resize 事件会自然触发 handleResize()
 
       Object.assign(modelStore, rest)
     } catch (error) {

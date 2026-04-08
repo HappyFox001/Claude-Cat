@@ -62,9 +62,21 @@ class Live2d {
 
     this.app?.stage.addChild(this.model)
 
+    // 确保模型处于标准状态（未缩放）时获取bounds
+    this.model.scale.set(1.0)
+    this.model.anchor.set(0, 0)
+    this.model.position.set(0, 0)
+
     const bounds = this.model.getBounds()
     const { width, height } = bounds
     const { motions, expressions } = modelSettings
+
+    if (import.meta.env.DEV) {
+      console.log('[Live2D Load]', {
+        modelBounds: { width, height },
+        modelScale: this.model.scale.x,
+      })
+    }
 
     return {
       width,
@@ -87,23 +99,38 @@ class Live2d {
 
     const { width, height } = modelSize
 
-    // 添加10%的边距以确保模型完全可见
-    const padding = 0.1
-    const availableWidth = innerWidth * (1 - padding)
-    const availableHeight = innerHeight * (1 - padding)
+    // 获取当前模型的实际bounds用于对比
+    const currentBounds = this.model.getBounds()
 
-    const scaleX = availableWidth / width
-    const scaleY = availableHeight / height
-    const scale = Math.min(scaleX, scaleY)
+    // 简化缩放逻辑：直接将模型缩放到窗口尺寸的90%
+    // 留出10%的安全边距以确保耳朵等部分不被裁剪
+    const safeAreaRatio = 0.9
 
-    this.model.scale.set(scale)
+    const scaleX = (innerWidth * safeAreaRatio) / width
+    const scaleY = (innerHeight * safeAreaRatio) / height
+    const finalScale = Math.min(scaleX, scaleY)
 
-    // 使用底部中心锚点，确保头部不会被切掉
-    // anchor (0.5, 1) 表示底部中心点
-    this.model.anchor.set(0.5, 1)
+    // 调试日志
+    if (import.meta.env.DEV) {
+      console.log('[Live2D Resize]', {
+        windowSize: { width: innerWidth, height: innerHeight },
+        inputModelSize: { width, height },
+        currentBounds: { width: currentBounds.width, height: currentBounds.height },
+        currentModelScale: { x: this.model.scale.x, y: this.model.scale.y },
+        calculatedScale: finalScale,
+        safeAreaRatio,
+        scaleX,
+        scaleY,
+      })
+    }
+
+    this.model.scale.set(finalScale)
+
+    // 使用中心锚点定位，模型在窗口正中央
+    // anchor (0.5, 0.5) 表示中心点
+    this.model.anchor.set(0.5, 0.5)
     this.model.x = innerWidth / 2
-    // 将模型底部对齐到窗口底部（留一点边距）
-    this.model.y = innerHeight * 0.98
+    this.model.y = innerHeight / 2
   }
 
   public playMotion(group: string, index: number) {

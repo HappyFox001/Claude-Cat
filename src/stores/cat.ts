@@ -55,10 +55,15 @@ export const MAX_SCALE = 500 // 最大500%
 export const DEFAULT_SCALE = 100 // 默认100%
 
 function normalizeScale(value: unknown) {
+  // 明确处理 null 和 undefined，返回默认值而不是最小值
+  if (value == null) return DEFAULT_SCALE
+
   const numericValue = typeof value === 'number' ? value : Number(value)
 
-  if (Number.isNaN(numericValue)) return MIN_SCALE
+  // NaN 也返回默认值
+  if (Number.isNaN(numericValue)) return DEFAULT_SCALE
 
+  // 限制在有效范围内
   return Math.max(MIN_SCALE, Math.min(MAX_SCALE, numericValue))
 }
 
@@ -90,6 +95,18 @@ export const useCatStore = defineStore('cat', () => {
 
   const expressions = reactive<ExpressionMapping>({ ...DEFAULT_EXPRESSION_MAPPING })
 
+  // 迁移旧版本配置（清理不兼容的字段）
+  // 旧版本有 baseHeight, baseWidth, model, migrated 等字段
+  // 这些字段会导致 tauri-store 恢复数据时出现问题
+  if (import.meta.env.DEV) {
+    const windowAny = window as any
+    if (windowAny.baseHeight !== undefined || windowAny.baseWidth !== undefined) {
+      console.warn('[CatStore] Detected old config format, cleaning up...')
+      delete windowAny.baseHeight
+      delete windowAny.baseWidth
+    }
+  }
+
   // 获取随机表情索引
   function getRandomExpression(state: ClaudeState): number {
     const candidates = expressions[state] || DEFAULT_EXPRESSION_MAPPING[state] || [0]
@@ -106,14 +123,27 @@ export const useCatStore = defineStore('cat', () => {
     window.scale = normalizeScale(value)
   }
 
-  // 监听并自动纠正缩放值（持久化加载或表单输入异常时）
+  // 初始化时验证并修正 scale 值（处理持久化数据异常）
+  // 这里不使用 watch immediate，因为 tauri-store 恢复数据时可能会触发误报
+  if (window.scale == null || window.scale < MIN_SCALE || window.scale > MAX_SCALE) {
+    if (import.meta.env.DEV) {
+      console.warn(`[CatStore] Invalid initial scale value ${window.scale}, setting to ${DEFAULT_SCALE}%`)
+    }
+    window.scale = DEFAULT_SCALE
+  }
+
+  // 监听并自动纠正缩放值（用户手动输入异常时）
+  // 移除 immediate 选项，避免在数据恢复过程中误触发
   watch(() => window.scale, (value) => {
     const normalized = normalizeScale(value)
     if (normalized === value) return
 
-    console.warn(`[CatStore] Scale value ${value}% is out of range, resetting to ${normalized}%`)
+    if (import.meta.env.DEV) {
+      console.warn(`[CatStore] Scale value ${value}% is out of range, resetting to ${normalized}%`)
+    }
+
     window.scale = normalized
-  }, { immediate: true })
+  })
 
   return {
     window,
