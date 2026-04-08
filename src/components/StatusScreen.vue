@@ -2,8 +2,10 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 import { useStatsStore } from '@/stores/statistics'
+import { useCatStore } from '@/stores/cat'
 
 const statsStore = useStatsStore()
+const catStore = useCatStore()
 const currentState = ref('idle')
 const isVisible = ref(false)
 const displayText = ref('')
@@ -116,6 +118,9 @@ const currentColor = computed(
   () => stateConfig[currentState.value]?.color || stateConfig.idle.color,
 )
 
+const windowScale = computed(() => Math.max(catStore.window.scale / 100, 0.1))
+const bubbleDisplayScale = computed(() => bubbleScale.value * windowScale.value)
+
 onMounted(() => {
   // 初始不显示
   isVisible.value = false
@@ -132,7 +137,7 @@ onUnmounted(() => {
     <div
       v-if="isVisible"
       class="thought-bubble-container"
-      :style="{ '--bubble-scale': bubbleScale, '--accent-color': currentColor }"
+      :style="{ '--bubble-scale': bubbleDisplayScale, '--accent-color': currentColor }"
     >
       <!-- 主气泡 -->
       <div class="thought-bubble">

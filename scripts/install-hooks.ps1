@@ -55,4 +55,4 @@ $settings | ConvertTo-Json -Depth 10 | Set-Content $claudeSettingsPath -Encoding
 
 Write-Host "`nHooks installed successfully!" -ForegroundColor Green
 Write-Host "Please restart Claude Code for changes to take effect." -ForegroundColor Yellow
-Write-Host "`nStatus file will be written to: $env:USERPROFILE\.bongo-cat\status.json" -ForegroundColor Gray
+Write-Host "`nStatus file will be written to: $env:USERPROFILE\.claude-cat\status.json" -ForegroundColor Gray

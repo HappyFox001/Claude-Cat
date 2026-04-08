@@ -23,7 +23,7 @@ pub struct StatusWatcher {
 impl StatusWatcher {
     pub fn new() -> Self {
         let home_dir = dirs::home_dir().expect("Failed to get home directory");
-        let status_path = home_dir.join(".bongo-cat").join("status.json");
+        let status_path = home_dir.join(".claude-cat").join("status.json");
 
         Self {
             status_path,

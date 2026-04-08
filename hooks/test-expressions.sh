@@ -17,7 +17,7 @@ for STATE in "${STATES[@]}"; do
     bash "$HOOK_SCRIPT" "$STATE"
     
     # Show current status file content
-    cat ~/.bongo-cat/status.json
+    cat ~/.claude-cat/status.json
     echo ""
     
     # Wait 3 seconds before next state

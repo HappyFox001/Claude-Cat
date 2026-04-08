@@ -103,4 +103,4 @@ echo -e "  \033[32mStop -> idle\033[0m"
 
 echo -e "\n\033[32mHooks installed successfully!\033[0m"
 echo -e "\033[33mPlease restart Claude Code for changes to take effect.\033[0m"
-echo -e "\n\033[90mStatus file will be written to: $HOME/.bongo-cat/status.json\033[0m"
+echo -e "\n\033[90mStatus file will be written to: $HOME/.claude-cat/status.json\033[0m"

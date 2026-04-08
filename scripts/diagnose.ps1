@@ -39,7 +39,7 @@ if (Test-Path $hookScriptPath) {
 
 # 3. Check status directory
 Write-Host "`n[3] Checking status directory..." -ForegroundColor Yellow
-$statusDir = Join-Path $env:USERPROFILE ".bongo-cat"
+$statusDir = Join-Path $env:USERPROFILE ".claude-cat"
 if (Test-Path $statusDir) {
     Write-Host "  ✓ Status directory exists: $statusDir" -ForegroundColor Green
 
@@ -104,5 +104,5 @@ Write-Host "  pnpm tauri dev" -ForegroundColor Green
 Write-Host "`nTo test the hook manually:" -ForegroundColor Yellow
 Write-Host "  .\hooks\bongo-cat-hook.ps1 -State thinking" -ForegroundColor Green
 Write-Host "`nTo monitor the status file:" -ForegroundColor Yellow
-Write-Host "  Get-Content ~\.bongo-cat\status.json -Wait" -ForegroundColor Green
+Write-Host "  Get-Content ~\.claude-cat\status.json -Wait" -ForegroundColor Green
 Write-Host ""

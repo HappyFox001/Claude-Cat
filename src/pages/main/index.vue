@@ -96,6 +96,8 @@ watch([() => catStore.window.scale, modelSize], async ([scale, modelSize]) => {
 
     // 等待 resize 事件触发完成
     await new Promise(resolve => setTimeout(resolve, 150))
+    await handleResize()
+    await setWindowPosition()
   } finally {
     isUpdatingSize = false
   }

@@ -195,7 +195,7 @@ interface PetState {
 
 | 信息 | 获取方式 | 用途 |
 |------|----------|------|
-| 当前状态 | `~/.bongo-cat/status.json` | 表情切换 |
+| 当前状态 | `~/.claude-cat/status.json` | 表情切换 |
 | 状态时间戳 | status.json | 计算工作时长 |
 | 工具调用 | hooks 注入 | 工具使用统计 |
 | 任务结果 | hooks 注入 | 成功/失败判断 |
@@ -208,7 +208,7 @@ interface PetState {
 # bongo-cat-hook.sh
 #!/bin/bash
 
-STATUS_FILE="$HOME/.bongo-cat/status.json"
+STATUS_FILE="$HOME/.claude-cat/status.json"
 
 # 根据事件类型更新状态
 case "$CLAUDE_EVENT" in

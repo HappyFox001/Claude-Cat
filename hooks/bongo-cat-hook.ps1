@@ -1,4 +1,4 @@
-# BongoCat Claude Code Hook
+# Claude Cat Hook Script
 # Maps Claude Code events to expression states
 
 param(
@@ -14,7 +14,7 @@ if ($State -notin $validStates) {
 }
 
 # Create status directory if it doesn't exist
-$statusDir = Join-Path $env:USERPROFILE ".bongo-cat"
+$statusDir = Join-Path $env:USERPROFILE ".claude-cat"
 if (-not (Test-Path $statusDir)) {
     New-Item -ItemType Directory -Path $statusDir -Force | Out-Null
 }

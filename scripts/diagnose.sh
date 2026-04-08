@@ -39,7 +39,7 @@ fi
 
 # 3. Check status directory
 echo -e "\n\033[33m[3] Checking status directory...\033[0m"
-STATUS_DIR="$HOME/.bongo-cat"
+STATUS_DIR="$HOME/.claude-cat"
 if [[ -d "$STATUS_DIR" ]]; then
     echo -e "  \033[32m✓ Status directory exists: $STATUS_DIR\033[0m"
 
@@ -101,5 +101,5 @@ echo -e "  \033[32mpnpm dev\033[0m"
 echo -e "\n\033[33mTo test the hook manually:\033[0m"
 echo -e "  \033[32m./hooks/bongo-cat-hook.sh thinking\033[0m"
 echo -e "\n\033[33mTo monitor the status file:\033[0m"
-echo -e "  \033[32mtail -f ~/.bongo-cat/status.json\033[0m"
+echo -e "  \033[32mtail -f ~/.claude-cat/status.json\033[0m"
 echo ""

@@ -16,7 +16,7 @@ echo ""
 
 # 2. Check if status directory exists
 echo "2. Checking status directory..."
-if [ -d "$HOME/.bongo-cat" ]; then
+if [ -d "$HOME/.claude-cat" ]; then
     echo "   ✅ Status directory exists"
 else
     echo "   ❌ Status directory missing"
@@ -25,10 +25,10 @@ echo ""
 
 # 3. Check if status file exists and is readable
 echo "3. Checking status file..."
-if [ -f "$HOME/.bongo-cat/status.json" ]; then
+if [ -f "$HOME/.claude-cat/status.json" ]; then
     echo "   ✅ Status file exists"
     echo "   Current content:"
-    cat "$HOME/.bongo-cat/status.json"
+    cat "$HOME/.claude-cat/status.json"
 else
     echo "   ❌ Status file missing"
 fi
@@ -40,7 +40,7 @@ bash "$HOOK_PATH" "thinking"
 if [ $? -eq 0 ]; then
     echo "   ✅ Hook script executed successfully"
     echo "   Updated status:"
-    cat "$HOME/.bongo-cat/status.json"
+    cat "$HOME/.claude-cat/status.json"
 else
     echo "   ❌ Hook script failed to execute"
 fi
