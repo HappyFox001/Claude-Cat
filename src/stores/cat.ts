@@ -68,7 +68,7 @@ export const useCatStore = defineStore('cat', () => {
     visible: true,
     passThrough: false,
     alwaysOnTop: false,
-    scale: 5,
+    scale: 100,
     opacity: 100,
     radius: 0,
     hideOnHover: false,

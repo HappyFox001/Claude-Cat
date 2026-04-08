@@ -40,26 +40,18 @@ const generalStore = useGeneralStore()
 const resizing = ref(false)
 const backgroundImagePath = ref<string>()
 const { isMounted, setWindowPosition } = useWindowPosition()
-let isUpdatingSize = false
 
 onMounted(startListening)
 
 onUnmounted(handleDestroy)
 
 const debouncedResize = useDebounceFn(async () => {
-  if (isUpdatingSize) {
-    resizing.value = false
-    return
-  }
-
   await handleResize()
   await setWindowPosition()
   resizing.value = false
 }, 100)
 
 useEventListener('resize', () => {
-  if (isUpdatingSize) return
-
   resizing.value = true
   debouncedResize()
 })
@@ -83,24 +75,15 @@ watch([() => catStore.window.scale, modelSize], async ([scale, modelSize]) => {
 
   const { width, height } = modelSize
 
-  // 防止触发 resize 事件处理
-  isUpdatingSize = true
+  await appWindow.setSize(
+    new PhysicalSize({
+      width: Math.round(width * (scale / 100)),
+      height: Math.round(height * (scale / 100)),
+    }),
+  )
 
-  try {
-    await appWindow.setSize(
-      new PhysicalSize({
-        width: Math.round(width * (scale / 100)),
-        height: Math.round(height * (scale / 100)),
-      }),
-    )
-
-    // 等待 resize 事件触发完成
-    await new Promise(resolve => setTimeout(resolve, 150))
-    await handleResize()
-    await setWindowPosition()
-  } finally {
-    isUpdatingSize = false
-  }
+  // 等待 resize 事件触发完成，防止连续更新过快
+  await new Promise(resolve => setTimeout(resolve, 150))
 }, { immediate: true })
 
 watch(() => catStore.window.visible, async (value) => {

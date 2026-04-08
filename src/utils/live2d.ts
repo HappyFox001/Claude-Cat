@@ -62,7 +62,8 @@ class Live2d {
 
     this.app?.stage.addChild(this.model)
 
-    const { width, height } = this.model
+    const bounds = this.model.getBounds()
+    const { width, height } = bounds
     const { motions, expressions } = modelSettings
 
     return {
@@ -86,14 +87,23 @@ class Live2d {
 
     const { width, height } = modelSize
 
-    const scaleX = innerWidth / width
-    const scaleY = innerHeight / height
+    // 添加10%的边距以确保模型完全可见
+    const padding = 0.1
+    const availableWidth = innerWidth * (1 - padding)
+    const availableHeight = innerHeight * (1 - padding)
+
+    const scaleX = availableWidth / width
+    const scaleY = availableHeight / height
     const scale = Math.min(scaleX, scaleY)
 
     this.model.scale.set(scale)
+
+    // 使用底部中心锚点，确保头部不会被切掉
+    // anchor (0.5, 1) 表示底部中心点
+    this.model.anchor.set(0.5, 1)
     this.model.x = innerWidth / 2
-    this.model.y = innerHeight / 2
-    this.model.anchor.set(0.5)
+    // 将模型底部对齐到窗口底部（留一点边距）
+    this.model.y = innerHeight * 0.98
   }
 
   public playMotion(group: string, index: number) {
